@@ -1,4 +1,4 @@
-package com.kerher.projects.ticketflow.controller;
+package com.kerher.projects.ticketflow.shared.infrastructure.web;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

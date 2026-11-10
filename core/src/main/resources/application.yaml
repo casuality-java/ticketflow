@@ -1,3 +1,13 @@
 spring:
   application:
     name: ticketflow
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ticketflow
+    username: ticketflow
+    password: ticketflow
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    enabled: true
+    change-log: classpath:db.changelog/db.changelog-master.yaml

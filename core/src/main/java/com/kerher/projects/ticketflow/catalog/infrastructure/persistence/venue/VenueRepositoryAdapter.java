@@ -25,4 +25,9 @@ public class VenueRepositoryAdapter implements VenueRepository {
     public Optional<Venue> findById(UUID id) {
         return venueJpaRepository.findById(id).map(venueMapper::toDomain);
     }
+
+    @Override
+    public boolean existsById(UUID id) {
+        return venueJpaRepository.existsById(id);
+    }
 }

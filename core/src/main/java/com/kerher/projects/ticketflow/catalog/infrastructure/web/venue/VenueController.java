@@ -4,6 +4,7 @@ import com.kerher.projects.ticketflow.catalog.application.venue.CreateVenueComma
 import com.kerher.projects.ticketflow.catalog.application.venue.VenueService;
 import com.kerher.projects.ticketflow.catalog.domain.Venue;
 import com.kerher.projects.ticketflow.catalog.infrastructure.web.venue.dto.CreateVenueRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ public class VenueController {
     private final VenueService venueService;
 
     @PostMapping
-    public Venue createVenue(@RequestBody CreateVenueRequest cvr) {
+    public Venue createVenue(@Valid @RequestBody CreateVenueRequest cvr) {
         return venueService.createVenue(CreateVenueCommand.builder()
                 .name(cvr.name())
                 .address(cvr.address())

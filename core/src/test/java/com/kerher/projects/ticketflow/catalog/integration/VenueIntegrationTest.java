@@ -1,4 +1,4 @@
-package com.kerher.projects.ticketflow.catalog.application.venue;
+package com.kerher.projects.ticketflow.catalog.integration;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -43,5 +45,28 @@ class VenueIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.city").value("Moscow"));
+    }
+
+    @Test
+    void getVenue_whenVenue_doesNotExist_thenThrowException() throws Exception {
+        String venueId = UUID.randomUUID().toString();
+        mockMvc.perform(get("/api/v1/venues/{id}", venueId))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value(String.format("Venue not found: %s", venueId)))
+                .andReturn();
+    }
+
+    @Test
+    void createVenue_whenVenueNameIsEmpty_thenThrowException() throws Exception {
+        String body = """
+                {"name": "", "address": "MKAD 66th km", "city": "Moscow"}
+                """;
+
+        mockMvc.perform(post("/api/v1/venues")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("name cannot be blank"))
+                .andReturn();
     }
 }
